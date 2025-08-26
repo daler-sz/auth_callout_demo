@@ -1,0 +1,14 @@
+[project]
+name = "auth-callout-demo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "adaptix>=3.0.0b11",
+    "base58>=2.1.1",
+    "faststream[nats]>=0.5.48",
+    "nats-py[jwt,nkeys]>=2.11.0",
+    "nkeys>=0.2.1",
+    "pyjwt[crypto]>=2.10.1",
+]
