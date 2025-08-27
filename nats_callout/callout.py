@@ -30,8 +30,7 @@ def callout(
         async def _inner(body: str | bytes, *args, **kwargs) -> str:
             if isinstance(body, bytes):
                 body = body.decode()
-            payload = decode_auth_request(body)
-            auth_request = retort.load(payload, AuthRequestClaims)
+            auth_request = decode_auth_request(body, retort)
             auth_request_data = auth_request.nats
             now = datetime.now()
             iat = int(now.timestamp())
@@ -47,7 +46,7 @@ def callout(
                         version=auth_request.nats.version,
                         tags=auth_request.nats.tags,
                         error=e.message,
-                    )
+                    ),
                 )
                 auth_response_jwt = encode(retort.dump(auth_response), kp)
                 return auth_response_jwt
@@ -60,7 +59,7 @@ def callout(
                 exp=iat + exp,
                 nbf=iat + nbf if nbf else None,
                 name=auth_request_data.user_nkey,
-                nats=user_data
+                nats=user_data,
             )
             user_jwt = encode(
                 retort.dump(user_claims),

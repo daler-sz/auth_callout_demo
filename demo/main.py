@@ -24,7 +24,8 @@ NKEY_SEED = "SAAEJZZ3B3Y5655RH7O6SQJCVZG6WPYFMJWYOI2CRMSL5W4YQZ2XSWFCUQ".encode(
 async def auth_request_handler(
     body: str,
 ) -> str:
-    return await check_auth(body)
+    res = await check_auth(body)
+    return res
 
 
 @callout(NKEY_SEED, account="DEMO")
@@ -53,9 +54,19 @@ async def after_startup():
     broker = NatsBroker(security=valid_creds)
     await broker.connect()  # successfully connects
 
-    invalid_creds = SASLPlaintext(username="demo", password="wrong")
-    broker = NatsBroker(security=invalid_creds)
-    await broker.connect() # raises an authentication error
+    await broker.publish(
+        "hello world!",
+        "foo",
+    )  # allowed
+
+    await broker.publish(
+        "hello world!",
+        "bar",
+    )  # disallowed
+
+    # invalid_creds = SASLPlaintext(username="demo", password="wrong")
+    # broker = NatsBroker(security=invalid_creds)
+    # await broker.connect() # raises an authentication error
 
 
 async def main():
