@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Literal
 
-from nats_jwt.claims.base import BaseClaims, BaseNats
+from nats_callout.claims.base import BaseClaims, BaseNats
 
 
 @dataclass(kw_only=True)
@@ -52,7 +52,7 @@ class ClientTLS:
 
 
 @dataclass(kw_only=True)
-class AuthorizationRequestData(BaseNats):
+class AuthRequestData(BaseNats):
     type: Literal["authorization_request"] = "authorization_request"
     server_id: ServerID
     user_nkey: str
@@ -63,5 +63,5 @@ class AuthorizationRequestData(BaseNats):
 
 
 @dataclass(kw_only=True)
-class AuthorizationRequestClaims(BaseClaims[AuthorizationRequestData]):
+class AuthRequestClaims(BaseClaims[AuthRequestData]):
     pass

@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Literal
 
-from nats_jwt.claims.base import BaseClaims, BaseNats
+from nats_callout.claims.base import BaseClaims, BaseNats
 
 
 @dataclass(kw_only=True)
-class AuthorizationResponseData(BaseNats):
+class AuthResponseData(BaseNats):
     type: Literal["authorization_response"] = "authorization_response"
     jwt: str | None = None
     error: str | None = None
@@ -13,5 +13,5 @@ class AuthorizationResponseData(BaseNats):
 
 
 @dataclass(kw_only=True)
-class AuthorizationResponseClaims(BaseClaims[AuthorizationResponseData]):
+class AuthResponseClaims(BaseClaims[AuthResponseData]):
     pass

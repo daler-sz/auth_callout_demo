@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 from typing_extensions import Literal
 
-from nats_jwt.claims.base import BaseNats, BaseClaims
+from nats_callout.claims.base import BaseNats, BaseClaims
 
 
 @dataclass(kw_only=True)
