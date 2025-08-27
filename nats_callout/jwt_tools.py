@@ -3,6 +3,7 @@ import hashlib
 import base64
 import json
 
+import jwt
 from adaptix import Retort
 from nacl.signing import VerifyKey
 from nkeys import KeyPair, ErrInvalidSeed, PREFIX_BYTE_SERVER
@@ -31,14 +32,14 @@ def encode(data: dict, kp: KeyPair):
 
 
 def decode_auth_request(token: str, retort: Retort) -> AuthRequestClaims:
-    header_b64, payload_b64, signature_b64 = token.split('.')
-    header_json = _b64_decode_dict(header_b64)
-
+    token_data = jwt.decode_complete(token, options={"verify_signature": False})  # verify claims
+    header_json = token_data["header"]
     if header_json != jwt_header:
         raise ValueError("Invalid JWT header")
+    payload_json = token_data["payload"]
 
-    payload_json = _b64_decode_dict(payload_b64)
-
+    # verify signature
+    header_b64, payload_b64, signature_b64 = token.split('.')
     data = retort.load(payload_json, AuthRequestClaims)
     iss = data.iss
     _, raw_public = _decode_server_public_key(iss.encode())
